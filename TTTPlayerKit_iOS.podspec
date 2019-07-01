@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
   spec.name         = "TTTPlayerKit_iOS"
-  spec.version      = "1.0"
+  spec.version      = "1.1"
   spec.summary      = "TTTPlayerKit_iOS"
-  spec.description  = "first install the framework"
+  spec.description  = "TTTPlayerKit_iOS not support bitcode"
 
   spec.homepage     = "https://github.com/santiyun/TTTPlayerKit_iOS"
   spec.license      = "MIT"
@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.author             = { "santiyun" => "sdyzsdut@163.com" }
 
   spec.platform     = :ios, "8.0"
-  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.0" }
+  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.1" }
 
   spec.vendored_frameworks = '*.framework'
   #spec.vendored_libraries = '*.a'
@@ -20,5 +20,7 @@ Pod::Spec.new do |spec|
   #spec.frameworks = 'AVFoundation', 'AudioToolbox'
 
   spec.pod_target_xcconfig = { 'VALID_ARCHS[sdk=iphonesimulator*]' => '' }
+
+  spec.user_target_xcconfig =  { 'ENABLE_BITCODE' => 'NO' }
 
 end
