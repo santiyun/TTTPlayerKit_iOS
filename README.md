@@ -1,2 +1,4 @@
 # TTTPlayerKit_iOS
-发布三体云拉流SDK
+
+### 1.2
+ > 带有自定义SEI内容
