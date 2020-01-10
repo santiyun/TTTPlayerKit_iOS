@@ -2,6 +2,8 @@
 #import <UIKit/UIKit.h>
 #import "TTTPlayerOptions.h"
 
+
+
 /**
  TTTPlayer 的播放状态
  */
@@ -48,85 +50,21 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
     TTTPlayerStatusError
 };
 
+
 /**
  TTTPlayer 的统计信息类
  */
 @interface TTTPlayerStatsInfo : NSObject
-@property (nonatomic, assign) float frameRate;  // 帧率(fps)
+@property (nonatomic, assign) int frameRate;  // 帧率(fps)
 @property (nonatomic, assign) int videoBitrate; // 视频的码率(kbps)
 @property (nonatomic, assign) int audioBitrate; // 音频的码率(kbps)
+@property (nonatomic, assign) int width;        // 视频宽
+@property (nonatomic, assign) int height;       // 视频高
+@property (nonatomic, assign) int audioDelay;   // 音频延迟(ms)
+@property (nonatomic, assign) int videoDelay;   // 视频延迟(ms)
 @end
 
-@class TTTPlayer;
-
-/**
- TTTPlayer 的代理协议
- */
-@protocol TTTPlayerDelegate <NSObject>
-@optional;
-
-/**
- 告知代理对象播放器状态变更
- 
- @param player       调用该方法的 TTTPlayer 对象
- @param playerStatus 变更之后的 TTTPlayer 状态
- */
-- (void)player:(nonnull TTTPlayer *)player statusDidChange:(TTTPlayerStatus)playerStatus;
-
-/**
- 告知代理对象播放器因错误停止播放
- 
- @param player 调用该方法的 TTTPlayer 对象
- @param error  携带播放器停止播放错误信息的 NSError 对象
- */
-- (void)player:(nonnull TTTPlayer *)player stoppedWithError:(nullable NSError *)error;
-
-/**
- 告知代理对象播放器统计信息（每秒触发一次）
- 
- @param player    调用该方法的 TTTPlayer 对象
- @param statsInfo 统计信息
- */
-- (void)player:(nonnull TTTPlayer *)player statsInfo:(nonnull TTTPlayerStatsInfo *)statsInfo;
-
-/**
- 告知代理对象播放器H264SEI
- 
- @param player  调用该方法的 TTTPlayer 对象
- @param sei     H264SEI
- */
-- (void)player:(nonnull TTTPlayer *)player playbackH264SEI:(nonnull NSString *)sei;
-
-/**
- 告知代理对象播放器H264SEI中的音量信息
- 
- @param player  调用该方法的 TTTPlayer 对象
- @param volInfo 音量信息
- */
-- (void)player:(nonnull TTTPlayer *)player playbackVolInfo:(nonnull NSArray<NSDictionary *> *)volInfo;
-
-- (void)playerRenderOverlay:(nonnull TTTPlayer *)player;
-
-#pragma mark - KTV
-/**
- 回调KTV视频数据信息
- 
- @param player  调用该方法的 TTTPlayer 对象
- @param data   420P数据
- @param width  视频宽
- @param height 视频高
- */
-- (void)player:(nonnull TTTPlayer *)player videoData:(NSData *_Nullable)data width:(int)width height:(int)height;
-
-/**
- 回调KTV音频数据信息
- 
- @param player  调用该方法的 TTTPlayer 对象
- @param data    音频数据
- */
-- (void)player:(nonnull TTTPlayer *)player audioData:(NSData *_Nullable)data;
-
-@end
+@protocol TTTPlayerDelegate;
 
 /**
  TTTPlayer 是 TTTPlayerKit 中负责播放控制的核心类
@@ -136,17 +74,17 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
 /**
  代理对象，用于告知播放器状态改变或其他行为，对象需实现 TTTPlayerDelegate 协议
  */
-@property (nonatomic, weak, nullable) id<TTTPlayerDelegate> delegate;
+@property (nonatomic, weak) id<TTTPlayerDelegate> delegate;
 
 /**
  TTTPlayer 的 options 对象
  */
-@property (nonatomic, nonnull, strong, readonly) TTTPlayerOptions *options;
+@property (nonatomic, strong, readonly) TTTPlayerOptions *options;
 
 /**
  TTTPlayer 的画面输出到该 UIView 对象
  */
-@property (nonatomic, strong, nullable, readonly) UIView *playerView;
+@property (nonatomic, strong, readonly) UIView *playerView;
 
 /**
  TTTPlayer 的播放状态
@@ -169,6 +107,7 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
 @property (nonatomic, assign, readonly) NSTimeInterval totalDuration;
 
 
+
 /**
  使用 URL 和 options 生成一个 TTTPlayer 对象
  
@@ -177,7 +116,7 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  
  @return 生成的 TTTPlayer 对象
  */
-+ (nullable instancetype)playerWithURL:(nullable NSURL *)URL options:(nullable TTTPlayerOptions *)options;
++ (instancetype)playerWithURL:(NSURL *)URL options:(TTTPlayerOptions *)options;
 
 /**
  使用 url 和 option 初始化一个 TTTPlayer 对象
@@ -187,7 +126,7 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  
  @return 初始化后的 TTTPlayer 对象
  */
-- (nullable instancetype)initWithURL:(nullable NSURL *)URL options:(nullable TTTPlayerOptions *)options;
+- (instancetype)initWithURL:(NSURL *)URL options:(TTTPlayerOptions *)options;
 
 /**
  开始播放
@@ -243,4 +182,81 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  * @param channels    声道数
  */
 - (void)pullKTVAudioData:(char *)data size:(int)size sampleRate:(int)sampleRate channels:(int)channels;
+@end
+
+
+/**
+ TTTPlayer 的代理协议
+ */
+@protocol TTTPlayerDelegate <NSObject>
+@optional;
+
+/**
+ 告知代理对象播放器状态变更
+ 
+ @param player       调用该方法的 TTTPlayer 对象
+ @param playerStatus 变更之后的 TTTPlayer 状态
+ */
+- (void)player:(TTTPlayer *)player statusDidChange:(TTTPlayerStatus)playerStatus;
+
+/**
+ 告知代理对象播放器因错误停止播放
+ 
+ @param player 调用该方法的 TTTPlayer 对象
+ @param error  携带播放器停止播放错误信息的 NSError 对象
+ */
+- (void)player:(TTTPlayer *)player stoppedWithError:(NSError *)error;
+
+/**
+ 告知代理对象播放器统计信息（每2秒触发一次）
+ 
+ @param player    调用该方法的 TTTPlayer 对象
+ @param statsInfo 统计信息
+ */
+- (void)player:(TTTPlayer *)player statsInfo:(TTTPlayerStatsInfo *)statsInfo;
+
+/**
+ 告知代理对象播放器H264SEI
+ 
+ @param player  调用该方法的 TTTPlayer 对象
+ @param sei     H264SEI
+ */
+- (void)player:(TTTPlayer *)player playbackH264SEI:(NSString *)sei;
+
+/**
+ 告知代理对象播放器H264SEI中的音量信息
+ 
+ @param player  调用该方法的 TTTPlayer 对象
+ @param volInfo 音量信息
+ */
+- (void)player:(TTTPlayer *)player playbackVolInfo:(NSArray<NSDictionary *> *)volInfo;
+
+/**
+ * 视频第一帧解码成功
+ */
+- (void)playerVideoDecoderOpen:(TTTPlayer *)player;
+
+- (void)playerVideoFrameRenderedStart:(TTTPlayer *)player;
+
+- (void)playerRenderOverlay:(TTTPlayer *)player;
+
+#pragma mark - KTV
+/**
+ 回调KTV视频数据信息
+ 
+ @param player  调用该方法的 TTTPlayer 对象
+ @param data   420P数据
+ @param width  视频宽
+ @param height 视频高
+ */
+- (void)player:(TTTPlayer *)player videoData:(NSData *)data width:(int)width height:(int)height;
+
+/**
+ 回调KTV音频数据信息
+ 
+ @param player  调用该方法的 TTTPlayer 对象
+ @param data    音频数据
+ */
+- (void)player:(TTTPlayer *)player audioData:(NSData *)data;
+
 @end
