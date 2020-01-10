@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "TTTPlayerKit_iOS"
-  spec.version      = "1.4"
+  spec.version      = "1.4.1"
   spec.summary      = "TTTPlayerKit_iOS"
   spec.description  = "Play AV in background"
 
@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.author             = { "santiyun" => "sdyzsdut@163.com" }
 
   spec.platform     = :ios, "8.0"
-  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.4" }
+  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.4.1" }
 
   spec.vendored_frameworks = '*.framework'
   #spec.vendored_libraries = '*.a'
