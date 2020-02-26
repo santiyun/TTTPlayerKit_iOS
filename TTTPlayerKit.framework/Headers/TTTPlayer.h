@@ -182,6 +182,8 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  * @param channels    声道数
  */
 - (void)pullKTVAudioData:(char *)data size:(int)size sampleRate:(int)sampleRate channels:(int)channels;
+
++ (NSString *)getVersion;
 @end
 
 
