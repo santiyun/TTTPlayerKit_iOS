@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
   spec.name         = "TTTPlayerKit_iOS"
-  spec.version      = "1.5.0"
+  spec.version      = "1.6.0"
   spec.summary      = "TTTPlayerKit_iOS"
-  spec.description  = "Run in simulators"
+  spec.description  = "Add Log For TTT"
 
   spec.homepage     = "https://github.com/santiyun/TTTPlayerKit_iOS"
   spec.license      = "MIT"
@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.author             = { "santiyun" => "sdyzsdut@163.com" }
 
   spec.platform     = :ios, "8.0"
-  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.5.0" }
+  spec.source       = { :git => "https://github.com/santiyun/TTTPlayerKit_iOS.git", :tag => "1.6.0" }
 
   spec.vendored_frameworks = '*.framework'
   #spec.vendored_libraries = '*.a'

@@ -108,7 +108,7 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
 
 
 
-/**
+/** 
  使用 URL 和 options 生成一个 TTTPlayer 对象
  
  @param URL     需要播放的 URL
