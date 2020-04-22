@@ -106,9 +106,11 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  */
 @property (nonatomic, assign, readonly) NSTimeInterval totalDuration;
 
+/** 旋转视频只支持0、90、180、270*/
+@property (nonatomic) int rotateDegress;
 
 
-/** 
+/**
  使用 URL 和 options 生成一个 TTTPlayer 对象
  
  @param URL     需要播放的 URL
@@ -157,7 +159,8 @@ typedef NS_ENUM(NSInteger, TTTPlayerStatus) {
  调节播放音量
  @param volume  0-100
  */
--  (void)setPlaybackVolume:(int)volume;
+- (void)setPlaybackVolume:(int)volume;
+
 
 - (UIImage *)thumbnailImageAtCurrentTime;
 
